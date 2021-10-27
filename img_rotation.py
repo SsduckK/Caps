@@ -2,7 +2,6 @@ import math
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
-import os
 
 
 def find(img_input):
@@ -37,8 +36,10 @@ def find(img_input):
     print('second angle:', second_angle)
     final_img = img_rotate(second_img, second_angle)
 
-    draw_line(final_img)
-    return angle+second_angle
+    # draw_line(final_img)
+    # return angle+second_angle
+    draw_line(find_img)
+    return angle
 
 
 def img_read(img_input):
@@ -53,8 +54,6 @@ def img_read(img_input):
         img_original = np.load('final_img.jpg.npy')
     if img_input == 'cut.jpg':
         img_original = np.load('cut.jpg.npy')
-    # img_resized = cv2.resize(img_original, dsize=(1440, 810))
-    # return img_resized
     return img_original
 
 
@@ -135,8 +134,6 @@ def img_rotate(img_input, angle=0):
     height, width, channel = img.shape
     rotated_img = cv2.getRotationMatrix2D((width/2, height/2), angle, 1)
     done = cv2.warpAffine(img, rotated_img, (width, height), borderValue=(255, 255, 255))
-    #cv2.imshow('img', done)
-    cv2.waitKey()
     np.save('rotated_img.jpg', done)
     temp_img_name = 'rotated_img.jpg'
     return temp_img_name
@@ -164,7 +161,7 @@ def rotation_img_data(img_input, rotation_img_count=0):
 
 
 def first_max_line_img(img_input):
-    angle, zero_line = rotation_img_data(img_input, 8)
+    angle, zero_line = rotation_img_data(img_input, 4)
     max_zero_line = zero_line.argmax()
     max_angle = angle[max_zero_line]
     # print(angle, '\n', zero_line)
