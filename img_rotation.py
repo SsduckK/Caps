@@ -7,12 +7,6 @@ import matplotlib.pyplot as plt
 def find(img_input):
     temp_img = img_input
     np_temp_img = cv2.imread(temp_img)
-    # reverse_img = img_rotate(temp_img, 180)
-    # rotation_img = img_rotate(temp_img, 45)
-    # reverse_rot_img = img_rotate(temp_img, -45)
-    # RA_img = img_rotate(temp_img, 90)
-    # reverse_RA_img = img_rotate(temp_img, -90)
-    # print(f'original:{variance(temp_img)}\nreverse:{variance(reverse_img)}\nrotated:{variance(rotation_img)}\nreverse:{variance(reverse_rot_img)}\n90:{variance(RA_img)}\n-90:{variance(reverse_RA_img)}')
 
     h_blank, w_blank = make_blank(temp_img)
     temp_img = cv2.copyMakeBorder(np_temp_img, 3, 3, 3, 3, cv2.BORDER_CONSTANT, value=(255, 0, 0))
@@ -115,6 +109,7 @@ def draw_line(img_input):
     for i in zero_list:
         img = cv2.line(img, (0, i), (width, i), (255, 0, 0), 1)
     cv2.imshow('img_final', img)
+    cv2.imwrite('draw_line.jpg', img)
     cv2.waitKey()
     cv2.destroyAllWindows()
 

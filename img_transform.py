@@ -9,6 +9,8 @@ def find_crosspoint(listA, listB):
     x21, x22, y21, y22 = listB_copy[0], listB_copy[1], listB_copy[2], listB_copy[3]
 
     if (x22 == x21) or (x12 == x11):
+        if (x22 == x21) and (x12 == x11):
+            return 0, 0
         if x11 == x12:
             x = x12
             m2 = (y22 - y21) / (x22 - x21)
@@ -20,6 +22,8 @@ def find_crosspoint(listA, listB):
             y = m1 * (x - x11) + y11
             return x, y
     elif (y22 == y21) or (y12 == y11):
+        if (y22 == y21) and (y12 == y11):
+            return 0, 0
         if y11 == y12:
             y = y12
             m2 = (y22 - y21) / (x22 - x21)
@@ -60,9 +64,9 @@ def find_line(img_input):
     print(width, height, channel)
     img_gray = cv2.cvtColor(img_copy, cv2.COLOR_BGR2GRAY)
     img_gray_copy = cv2.GaussianBlur(img_gray, (3, 3), 0)
-    edges = cv2.Canny(img_gray_copy, 3000, 3500, apertureSize=5)
+    edges = cv2.Canny(img_gray_copy, 3700, 4000, apertureSize=5)
     cv2.imshow('edge', edges)
-    lines = cv2.HoughLines(edges, 1, 0.007, 260)
+    lines = cv2.HoughLines(edges, 0.9, 0.005, 240)
     list_point = []
     for i in range(len(lines)):
         for rho, theta in lines[i]:
@@ -71,16 +75,15 @@ def find_line(img_input):
             x0 = a * rho
             y0 = b * rho
             x1 = int(x0 + 1000 * (-b))
-            y1 = int(y0 + 1000 * (a))
+            y1 = int(y0 + 1000 * a)
             x2 = int(x0 - 1000 * (-b))
-            y2 = int(y0 - 1000 * (a))
+            y2 = int(y0 - 1000 * a)
             temp_list = [x1, x2, y1, y2]
             list_point.append(temp_list)
             # cv2.line(img, (x1, y1), (x2, y2), (0, 0, 255), 1)
             # cv2.circle(img, (int(x1), int(y1)), 2, (0, 0, 255), 2)
             # cv2.circle(img, (int(x2), int(y2)), 2, (0, 0, 255), 2)
     cv2.imshow('img', img)
-    cv2.imwrite('hough.jpg', img)
     cv2.waitKey()
     cross_point = list(itertools.combinations(list_point, 2))
     points = []
@@ -99,6 +102,8 @@ def find_line(img_input):
     for cross in img_cross_point:
         x, y = cross
         # cv2.circle(img, (int(x), int(y)), 2, (255, 0, 0), 2)
+
+    cv2.imwrite('hough.jpg', img)
 
     direction_list = []
     for points in img_cross_point:

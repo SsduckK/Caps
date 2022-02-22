@@ -5,7 +5,7 @@ import cv2
 
 
 def main():
-    temp_img = 'Vimg2.jpg'
+    temp_img = 'Wood12.jpg'
     img_transform.find_line(temp_img)
     temp_img = 'trans_img.jpg'
     angle = img_rotation.find(temp_img)
